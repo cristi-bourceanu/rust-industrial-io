@@ -13,7 +13,8 @@
 use std::ffi::CString;
 use std::os::raw::c_uint;
 use std::ptr;
-use std::rc::Rc;
+//use std::rc::Rc;
+use std::sync::Arc;
 use std::time::Duration;
 
 use nix::errno::Errno;
@@ -33,7 +34,7 @@ use crate::ffi;
 /// ergonomic by removing the need to manage the lifetime of the Context.
 #[derive(Debug, Clone)]
 pub struct Context {
-    inner: Rc<InnerContext>,
+    inner: Arc<InnerContext>,
 }
 
 /// Backends for I/O Contexts.
@@ -237,7 +238,7 @@ impl Context {
     /// Creates a context from an existing "inner" object.
     pub fn from_inner(inner: InnerContext) -> Self {
         Self {
-            inner: Rc::new(inner),
+            inner: Arc::new(inner),
         }
     }
 
